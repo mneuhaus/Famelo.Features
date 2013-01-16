@@ -1,0 +1,8 @@
+Famelo:
+  Scaff:
+    modules:
+      features:
+        label: 'Feature Toggles'
+        arguments:
+          @controller: 'Standard'
+          @package: 'Famelo.Features'

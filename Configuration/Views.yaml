@@ -1,0 +1,7 @@
+TYPO3:
+  Expose:
+    options:
+      typoScriptPathPatterns:
+        # Add you TypoScripts Path here, in order to Load them
+        # in the TypoScriptView
+        Famelo.Features: resource://Famelo.Features/Private/TypoScripts/
