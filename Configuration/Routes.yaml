@@ -1,0 +1,10 @@
+-
+  name: 'Features'
+  uriPattern: 'features'
+  navigation: 'Funktionen'
+  defaults:
+    '@format': 'html'
+    '@action':     'index'
+    '@controller': 'Standard'
+    '@package': 'Famelo.Features'
+  appendExceedingArguments: true

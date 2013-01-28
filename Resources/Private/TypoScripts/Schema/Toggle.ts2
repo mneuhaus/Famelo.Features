@@ -3,6 +3,18 @@ prototype(TYPO3.Expose:Schema:Famelo.Features.Domain.Model.Toggle) < prototype(T
 		created.ignore = true
 		start.ignore = true
 		stop.ignore = true
+
+		role {
+			label = 'Benutzergruppe'
+		}
+
+		account {
+			label = 'Benutzer'
+		}
+
+		global {
+			label = 'Global'
+		}
 	}
 }
 
@@ -12,7 +24,6 @@ prototype(TYPO3.Expose:RecordList).prototype(TYPO3.Expose:Schema:Famelo.Features
 
 prototype(TYPO3.Expose:FormLayout).prototype(TYPO3.Expose:Schema:Famelo.Features.Domain.Model.Toggle) {
 	properties {
-		feature.ignore = true
 	}
 }
 

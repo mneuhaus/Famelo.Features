@@ -17,13 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Toggle {
 
 	/**
-	 * The feature
-	 * @var \Famelo\Features\Domain\Model\Feature
-	 * @ORM\ManyToOne(inversedBy="toggles")
-	 */
-	protected $feature;
-
-	/**
 	 * The created
 	 * @var \DateTime
 	 */
@@ -67,26 +60,16 @@ class Toggle {
 	}
 
 	public function __toString() {
-		return strval($this->global);
-	}
-
-	/**
-	 * Get the Switch's feature
-	 *
-	 * @return \Famelo\Features\Domain\Model\Feature The Switch's feature
-	 */
-	public function getFeature() {
-		return $this->feature;
-	}
-
-	/**
-	 * Sets this Switch's feature
-	 *
-	 * @param \Famelo\Features\Domain\Model\Feature $feature The Switch's feature
-	 * @return void
-	 */
-	public function setFeature($feature) {
-		$this->feature = $feature;
+		if ($this->global !== FALSE) {
+			return 'Globally activated';
+		}
+		if ($this->getAccount() !== NULL) {
+			return strval($this->getAccount());
+		}
+		if ($this->getRole() !== NULL) {
+			return strval($this->getRole());
+		}
+		return 'not active';
 	}
 
 	/**

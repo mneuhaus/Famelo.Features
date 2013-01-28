@@ -2,7 +2,12 @@ prototype(TYPO3.Expose:Schema:Famelo.Features.Domain.Model.Feature) < prototype(
 	properties {
 		created.ignore = true
 
+		title {
+			label = 'Funktionalität'
+		}
+
 		toggles {
+			label = 'Aktiviert für'
 			inline {
 			 	element = 'TYPO3.Expose:InlineStacked'
 			}

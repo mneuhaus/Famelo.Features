@@ -30,7 +30,7 @@ class Feature {
 
 	/**
 	 * @var \Doctrine\Common\Collections\Collection<\Famelo\Features\Domain\Model\Toggle>
-	 * @ORM\OneToMany(mappedBy="feature", cascade={"persist"})
+	 * @ORM\ManyToMany(cascade={"all"})
 	 */
 	protected $toggles;
 
@@ -84,9 +84,6 @@ class Feature {
 	 * @param \Doctrine\Common\Collections\Collection<\Famelo\Features\Domain\Model\Toggle> $toggles
 	 */
 	public function setToggles($toggles) {
-		foreach ($toggles as $toggle) {
-			#$toggle->setFeature($this);
-		}
 		$this->toggles = $toggles;
 	}
 
