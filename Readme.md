@@ -5,7 +5,7 @@ easily.
 
 ## Creating a new Feature
 
-Features are specified in a seperate Configurtion file called "Features.yaml"
+Features are specified in a seperate Configuration file called "Features.yaml"
 
 Here's an example:
 
@@ -92,4 +92,20 @@ alternatively you can use it like the ifViewHelper with then/else
     	show some other suff
     </else>
 </feature:active>
+```
+
+## Settings
+
+```
+Famelo:
+  Features:
+    # You can change this setting to use your own ConditionMatcher with more specific functions
+    # you might need
+    conditionMatcher: \Famelo\Features\Core\ConditionMatcher
+
+    # What should happen if the service is asked about a feature it doesn't now?
+    # can be: active, inactive, exception
+    # exception is the default and will throw an exception because you probably
+    # mistyped some feature name
+    noMatchBehavior: exception
 ```
