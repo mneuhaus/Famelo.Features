@@ -10,7 +10,7 @@ Features are specified in a seperate Configuration file called "Features.yaml"
 Here's an example:
 
 
-```
+```yaml
 -
   name: OnyForAdminstators
   condition: hasRole('My.Package:Administrator')
@@ -52,7 +52,7 @@ Here's an example:
 
 you can easily inject the featureService like this:
 
-```
+```php
 	/**
 	 * The featureService
 	 *
@@ -65,7 +65,7 @@ you can easily inject the featureService like this:
 Then you can ask it if the feature you want to act upon is activated for the current
 user:
 
-```
+```php
 if ($this->featureService->isFeatureActive("myFeature")) {
 	do some cool stuff
 }
@@ -75,7 +75,7 @@ if ($this->featureService->isFeatureActive("myFeature")) {
 
 For convenience theres a wrapper for the featureService for fluid:
 
-```
+```html
 <feature:active feature="myFeature">
     show my cool feature
 </feature:active>
@@ -83,7 +83,7 @@ For convenience theres a wrapper for the featureService for fluid:
 
 alternatively you can use it like the ifViewHelper with then/else
 
-```
+```html
 <feature:active feature="myFeature">
 	<then>
     	show my cool feature
@@ -96,7 +96,7 @@ alternatively you can use it like the ifViewHelper with then/else
 
 ## Settings
 
-```
+```yaml
 Famelo:
   Features:
     # You can change this setting to use your own ConditionMatcher with more specific functions
