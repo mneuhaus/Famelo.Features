@@ -1,8 +1,9 @@
 Famelo:
-  Scaff:
-    modules:
-      features:
-        label: 'Feature Toggles'
-        arguments:
-          @controller: 'Standard'
-          @package: 'Famelo.Features'
+  Features:
+    conditionMatcher: \Famelo\Features\Core\ConditionMatcher
+
+    # What should happen if the service is asked about a feature it doesn't now?
+    # can be: active, inactive, exception
+    # exception is the default and will throw an exception because you probably
+    # mistyped some feature name
+    noMatchBehavior: exception

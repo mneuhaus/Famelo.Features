@@ -6,20 +6,16 @@ namespace Famelo\Features;
  *                                                                        *
  *                                                                        */
 
-use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
+use Famelo\Features\Core\ConditionMatcher;
+use TYPO3\Eel\Context;
+use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Error\Exception;
 
 /**
+ * @Flow\Scope("singleton")
  */
 class FeatureService {
-	/**
-	 * The featureService
-	 *
-	 * @var \Famelo\Features\Domain\Repository\FeatureRepository
-	 * @Flow\Inject
-	 */
-	protected $featureRepository;
-
 	/**
 	 * The securityContext
 	 *
@@ -28,28 +24,58 @@ class FeatureService {
 	 */
 	protected $securityContext;
 
-	public function isFeatureActive($feature) {
-		$feature = $this->featureRepository->findOneByTitle($feature);
-		$account = $this->securityContext->getAccount();
-		$roles = array();
-		foreach ($this->securityContext->getRoles() as $role) {
-			$roles[] = strval($role);
-		}
-		if ($feature !== NULL) {
-			foreach ($feature->getToggles() as $toggle) {
-				if ($toggle->getGlobal() == TRUE) {
-					return TRUE;
+	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Configuration\ConfigurationManager
+	 */
+	protected $configurationManager;
+
+	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Eel\CompilingEvaluator
+	 */
+	protected $eelEvaluator;
+
+	/**
+	 * @var array
+	 */
+	protected $runtimeCache = array();
+
+	public function isFeatureActive($requestedFeature) {
+		if (!isset($this->runtimeCache[$requestedFeature])) {
+			$this->runtimeCache[$requestedFeature] = NULL;
+
+			$settings = $this->configurationManager->getConfiguration('Settings', 'Famelo.Features');
+
+			$features = $this->configurationManager->getConfiguration('Features');
+			$conditionMatcher = new $settings['conditionMatcher']($requestedFeature);
+			$context = new Context($conditionMatcher);
+
+			foreach ($features as $feature) {
+				if ($feature['name'] == $requestedFeature && isset($feature['condition'])) {
+					$this->runtimeCache[$requestedFeature] =  $this->eelEvaluator->evaluate($feature['condition'], $context);
 				}
-				if ($account !== NULL && $toggle->getAccount() == $account) {
-					return TRUE;
-				}
-				if (in_array($toggle->getRole(), $roles)) {
-					return TRUE;
+			}
+
+			if ($this->runtimeCache[$requestedFeature] === NULL) {
+				switch ($settings['noMatchBehavior']) {
+					case 'active':
+						$this->runtimeCache[$requestedFeature] = TRUE;
+						break;
+
+					case 'inactive':
+						$this->runtimeCache[$requestedFeature] = FALSE;
+						break;
+
+					case 'exception':
+					default:
+						throw new Exception('The Feature you\'re trying to use does not exist: ' . $requestedFeature);
+						break;
 				}
 			}
 		}
 
-		return FALSE;
+		return $this->runtimeCache[$requestedFeature];
 	}
 }
 ?>
