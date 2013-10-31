@@ -1,6 +1,0 @@
--
-  requestFilter: 'isPackage("TYPO3.Expose")'
-  options:
-    typoScriptPathPatterns:
-      - 'resource://TYPO3.Expose/Private/TypoScripts/'
-      - 'resource://Famelo.Features/Private/TypoScripts/'
