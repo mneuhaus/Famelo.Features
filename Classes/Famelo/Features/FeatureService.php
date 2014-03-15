@@ -7,7 +7,6 @@ namespace Famelo\Features;
  *                                                                        */
 
 use Doctrine\ORM\Mapping as ORM;
-use Famelo\Features\Core\ConditionMatcher;
 use TYPO3\Eel\Context;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Error\Exception;
@@ -16,6 +15,7 @@ use TYPO3\Flow\Error\Exception;
  * @Flow\Scope("singleton")
  */
 class FeatureService {
+	
 	/**
 	 * The securityContext
 	 *
@@ -41,6 +41,11 @@ class FeatureService {
 	 */
 	protected $runtimeCache = array();
 
+	/**
+	 * @param $requestedFeature
+	 * @return mixed
+	 * @throws \TYPO3\Flow\Error\Exception
+	 */
 	public function isFeatureActive($requestedFeature) {
 		if (!isset($this->runtimeCache[$requestedFeature])) {
 			$this->runtimeCache[$requestedFeature] = NULL;
@@ -78,4 +83,3 @@ class FeatureService {
 		return $this->runtimeCache[$requestedFeature];
 	}
 }
-?>
