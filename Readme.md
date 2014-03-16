@@ -5,7 +5,7 @@ easily.
 
 ## Creating a new Feature
 
-Features are specified in a seperate Configuration file called "Features.yaml"
+Features are specified in a separate Configuration file called "Features.yaml"
 
 Here's an example:
 
@@ -73,11 +73,12 @@ if ($this->featureService->isFeatureActive("myFeature")) {
 
 ## Using the ActiveViewHelper
 
-For convenience theres a wrapper for the featureService for fluid:
+For convenience there is a wrapper for the featureService for fluid:
 
 ```html
+{namespace feature=Famelo\Features\ViewHelpers}
 <feature:active feature="myFeature">
-    show my cool feature
+	show my cool feature
 </feature:active>
 ```
 
@@ -85,12 +86,12 @@ alternatively you can use it like the ifViewHelper with then/else
 
 ```html
 <feature:active feature="myFeature">
-	<then>
-    	show my cool feature
-    </then>
-    <else>
-    	show some other suff
-    </else>
+	<f:then>
+		show my cool feature
+	</f:then>
+	<f:else>
+		show some other stuff
+	</f:else>
 </feature:active>
 ```
 

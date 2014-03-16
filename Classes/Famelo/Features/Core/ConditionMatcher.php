@@ -145,6 +145,4 @@ class ConditionMatcher {
 		}
 		return $clientIp == $ip;
 	}
-
 }
-?>
