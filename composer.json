@@ -1,1 +1,13 @@
-{"name":"famelo\/features","type":"typo3-flow-package","description":"","require":{"typo3\/flow":"*"},"autoload":{"psr-0":{"Famelo\\Features":"Classes"}}}
+{
+	"name": "famelo\/features",
+	"type": "typo3-flow-package",
+	"description":"",
+	"require": {
+		"typo3\/flow":"*"
+	},
+	"autoload": {
+		"psr-0": {
+			"Famelo\\Features": "Classes"
+		}
+	}
+}

@@ -110,3 +110,50 @@ Famelo:
     # mistyped some feature name
     noMatchBehavior: exception
 ```
+
+## Additional ConditionMatchers
+
+You can add as many custom conditionMatches as you like. All you have to do
+is implement a ConditionMatcher based on the "\Famelo\Features\Core\ConditionMatcherInterface".
+You can add as many methods and injected properties as you like. Any method of that
+class will be available as an eel method under a variable called as the NAME
+constant you specified. You can add any number of parameters for the methods as well.
+
+**Example:**
+
+```php
+<?php
+namespace My\Package\Features;
+use TYPO3\Flow\Annotations as Flow;
+
+class MyConditionMatcher implements \Famelo\Features\Core\ConditionMatcherInterface{
+    /**
+     * contains short name for this matcher used
+     * for reference in the eel expression
+     */
+    const NAME = 'my';
+
+    /**
+     * @param string $foo
+     * @return boolean
+     */
+    public function someCondition($foo) {
+        return $foo == 'bar';
+    }
+
+}
+```
+
+This matcher will then be available to be used like this automatically:
+
+```
+-
+  name: MyCustomMatcher
+  condition: my.someCondition('bar')
+  # will be true
+
+-
+  name: MyCustomMatcher2
+  condition: my.someCondition('guz')
+  # will be false
+```

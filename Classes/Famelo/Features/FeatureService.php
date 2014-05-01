@@ -15,14 +15,6 @@ use TYPO3\Flow\Error\Exception;
  * @Flow\Scope("singleton")
  */
 class FeatureService {
-	
-	/**
-	 * The securityContext
-	 *
-	 * @var \TYPO3\Flow\Security\Context
-	 * @Flow\Inject
-	 */
-	protected $securityContext;
 
 	/**
 	 * @Flow\Inject
@@ -53,7 +45,7 @@ class FeatureService {
 			$settings = $this->configurationManager->getConfiguration('Settings', 'Famelo.Features');
 
 			$features = $this->configurationManager->getConfiguration('Features');
-			$conditionMatcher = new $settings['conditionMatcher']($requestedFeature);
+			$conditionMatcher = $this->createConditionMatcher($settings['conditionMatcher'], $requestedFeature);
 			$context = new Context($conditionMatcher);
 
 			foreach ($features as $feature) {
@@ -81,5 +73,9 @@ class FeatureService {
 		}
 
 		return $this->runtimeCache[$requestedFeature];
+	}
+
+	public function createConditionMatcher($className, $name) {
+		return new $className($name);
 	}
 }

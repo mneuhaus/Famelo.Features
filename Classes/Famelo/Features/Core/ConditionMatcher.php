@@ -12,6 +12,7 @@ namespace Famelo\Features\Core;
  *                                                                        */
 
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Error\Exception;
 use TYPO3\Flow\Security\Account;
 
 /**
@@ -28,9 +29,20 @@ class ConditionMatcher {
 	protected $securityContext;
 
 	/**
+	 * @var \TYPO3\Flow\Reflection\ReflectionService
+	 * @Flow\Inject
+	 */
+	protected $reflectionService;
+
+	/**
 	 * @var string
 	 */
 	protected $feature;
+
+	/**
+	 * @var array
+	 */
+	protected $subConditionMatchers;
 
 	public function __construct($feature) {
 		$this->feature = $feature;
@@ -144,5 +156,26 @@ class ConditionMatcher {
 			$clientIp = getenv('REMOTE_ADDR');
 		}
 		return $clientIp == $ip;
+	}
+
+	public function __call($method, $arguments) {
+		if ($this->subConditionMatchers === NULL) {
+			$classNames = $this->reflectionService->getAllImplementationClassNamesForInterface('Famelo\Features\Core\ConditionMatcherInterface');
+			foreach ($classNames as $className) {
+				$shortName = $className::NAME;
+				$this->subConditionMatchers[$shortName] = $className;
+			}
+		}
+
+		if (substr($method, 0, 3) !== 'get') {
+			throw new Exception('The method you\'re trying to call does not exist: ' . $method);
+		}
+
+		$subConditionMatcher = lcfirst(substr($method, 3));
+		if (!isset($this->subConditionMatchers[$subConditionMatcher])) {
+			throw new Exception('The conditionMatcher you\'re trying to call does not exist: ' . $subConditionMatcher);
+		}
+
+		return new $this->subConditionMatchers[$subConditionMatcher]($this->feature);
 	}
 }
