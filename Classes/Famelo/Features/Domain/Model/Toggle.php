@@ -53,7 +53,7 @@ class Toggle {
 	 * The global
 	 * @var boolean
 	 */
-	protected $global;
+	protected $global = FALSE;
 
 	public function __construct() {
 		$this->created = new \DateTime();
